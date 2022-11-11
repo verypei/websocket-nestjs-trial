@@ -10,7 +10,7 @@ const httpServer = createServer();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({origin:"*"})
-  await app.listen(7000,()=>{
+  await app.listen(3334,()=>{
     console.log("<<<<<<<<======== LISTENING ON PORT 7000 WEB SOCKET TRIAL =======>>>>>>>>");
   });
 

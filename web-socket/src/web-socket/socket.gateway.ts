@@ -13,7 +13,9 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { NotifDto } from './notif.dto';
+// import { NotifDto } from 'src/dto/notification.dto';
 
+// @WebSocketGateway()
 @WebSocketGateway({cors:true})
 export class SocketGateway
   implements 
@@ -24,14 +26,45 @@ export class SocketGateway
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('pusat')
-  async handleAnother(@MessageBody() notif:NotifDto ){
-    this.server.emit('pusat',notif);
+  @SubscribeMessage('CENTER_SEND')//RECEIVE FROM CENTER COMMAND
+  handleFromCenterCommand(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);//SEND TO RECEIVER
   }
 
-  @SubscribeMessage('from_client_2')
-  async handleAnother2(@MessageBody() data: string){
-    this.server.emit('from_client_2',data)
+  @SubscribeMessage('PHARMACY_1_SEND')//RECEIVE FROM PHARMACY CMS
+  handleFromPharmacy1(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
+  }
+
+  @SubscribeMessage('POLY_1_SEND')//RECEIVE FROM POLY CMS
+  handleFromPoly1(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
+  }
+
+  @SubscribeMessage('ER_1_SEND')//RECEIVE FROM ER CMS
+  handleFromEr1(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
+  }
+  @SubscribeMessage('PHARMACY_2_SEND')//RECEIVE FROM PHARMACY CMS
+  handleFromPharmacy2(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
+  }
+
+  @SubscribeMessage('POLY_2_SEND')//RECEIVE FROM POLY CMS
+  handleFromPoly2(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
+  }
+
+  @SubscribeMessage('ER_2_SEND')//RECEIVE FROM ER CMS
+  handleFromEr2(@MessageBody() notif:NotifDto ){
+        console.log(notif.destination,"---DDD---");
+        this.server.emit(`${notif.destination}_RECEIVE`,notif);
   }
 
   handleConnection(client: any, ...args: any[]) {
@@ -40,7 +73,6 @@ export class SocketGateway
 
   handleDisconnect(client: any) {
     console.log('User disconnected');
-    // console.log(client,"===");
   }
 
   afterInit(server: any) {

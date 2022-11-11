@@ -92,11 +92,13 @@ export default function CMS_PUSAT({ props }) {
             origin:"CENTER",
             destination:select,
         }
-        const resp = await axios.post('http://localhost:3334/notif',obj);
-        console.log(resp,"====RESPONSE=====");
-        if(resp){
-            socket.emit('CENTER_SEND',obj);
-        }
+        // const resp = await axios.post('http://localhost:3334/notif',obj);
+        // console.log(resp,"====RESPONSE=====");
+        // if(resp){
+        //     socket.emit('CENTER_SEND',obj);
+        // }
+        socket.emit('CENTER_SEND',obj);
+
     }
 
     const handleNotif = (e) => {
