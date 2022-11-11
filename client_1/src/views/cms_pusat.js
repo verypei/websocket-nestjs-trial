@@ -48,13 +48,11 @@ export default function CMS_PUSAT({ props }) {
     // ================================================ USE EFFECT ================================================
             
     useEffect(()=>{
-                socket.on('CENTER_RECEIVE',handleSocket);
-                // socket.on('poly1',handleSocket);
-                // socket.on('igd1',handleSocket);
-                return ()=>{
-                    socket.off();
-                }
-            },[data])
+        socket.on('CENTER_RECEIVE',handleSocket);
+        return ()=>{
+            socket.off();
+        }
+    },[data])
     
     // ============================================= FUNCTION =====================================================
     
@@ -66,11 +64,15 @@ export default function CMS_PUSAT({ props }) {
 
     const handleSocket = (data)=>{
         switch (data.origin) {
-            case "pusat":
+            case "PHARMACY_1":
                 pushData(data)
                 socket.off();
                 break;
-            case "apotek2":
+            case "POLY_1":
+                pushData(data)
+                socket.off();
+                break;
+            case "ER_1":
                 pushData(data)
                 socket.off();
                 break;
@@ -91,6 +93,7 @@ export default function CMS_PUSAT({ props }) {
             destination:select,
         }
         const resp = await axios.post('http://localhost:3334/notif',obj);
+        console.log(resp,"====RESPONSE=====");
         if(resp){
             socket.emit('CENTER_SEND',obj);
         }

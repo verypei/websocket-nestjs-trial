@@ -51,6 +51,7 @@ export default function PORTAL_APOTEK({ props }) {
     
             useEffect(()=>{
                 socket.on('ALL_RECEIVE',handleSocket);
+                socket.on('PHARMACY_2_RECEIVE',handleSocket);
                 return ()=>{
                     socket.off();
                 }
@@ -69,16 +70,8 @@ export default function PORTAL_APOTEK({ props }) {
                 pushData(data)
                 socket.off();
                 break;
-            case "apotek2":
-                pushData()
-                socket.off();
-                break;
-            case "poly1":
-                pushData()
-                socket.off();
-                break;
-            case "igd1":
-                pushData()
+            case "PHARMACY_1":
+                pushData(data)
                 socket.off();
                 break;
             default:
@@ -92,15 +85,17 @@ export default function PORTAL_APOTEK({ props }) {
             title:title.current.value,
             detail:detail.current.value,
             category:category.current.value,
-            origin:"apotek2",
-            destination:destination.current.value,
-            status:status.current.value === "true" ? true : false,
+            origin:"PHARMACY_2",
+            destination:select,
+            status:status === "true" ? true : false,
         }
+        console.log(obj);
         const resp = await axios.post('http://localhost:3334/notif',obj);
         console.log(resp,"----RESP----");
         if(resp){
-            socket.emit('apotek2',obj)
+            socket.emit('PHARMACY_2_SEND',obj)
         }
+
     }
 
     const handleNotif = (e) => {
@@ -189,7 +184,7 @@ export default function PORTAL_APOTEK({ props }) {
                     <label for="cars">Choose a destination :</label>
                         <select value={select} onChange={e=>setSelect(e.target.value)}>
                             <option></option>
-                            <option value="apotek1">cms apotek</option>
+                            <option value="PHARMACY_1">cms apotek</option>
                         </select>
                         <br/>
 

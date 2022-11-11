@@ -51,6 +51,7 @@ export default function PORTAL_IGD({ props }) {
     
             useEffect(()=>{
                 socket.on('ALL_RECEIVE',handleSocket);
+                socket.on('ER_2_RECEIVE',handleSocket);
                 return ()=>{
                     socket.off();
                 }
@@ -69,16 +70,8 @@ export default function PORTAL_IGD({ props }) {
                 pushData(data)
                 socket.off();
                 break;
-            case "apotek2":
-                pushData()
-                socket.off();
-                break;
-            case "poly1":
-                pushData()
-                socket.off();
-                break;
-            case "igd1":
-                pushData()
+            case "ER_1":
+                pushData(data)
                 socket.off();
                 break;
             default:
@@ -92,16 +85,17 @@ export default function PORTAL_IGD({ props }) {
             title:title.current.value,
             detail:detail.current.value,
             category:category.current.value,
-            origin:"igd2",
-            destination:destination.current.value,
-            status:status.current.value === "true" ? true : false,
+            origin:"ER_2",
+            destination:select,
+            status:status === "true" ? true : false,
         }
-        
+        console.log(obj);
         const resp = await axios.post('http://localhost:3334/notif',obj);
         console.log(resp,"----RESP----");
         if(resp){
-            socket.emit('igd2',obj)
+            socket.emit('ER_2_SEND',obj)
         }
+
     }
 
     const handleNotif = (e) => {
@@ -190,7 +184,7 @@ export default function PORTAL_IGD({ props }) {
                     <label for="cars">Choose a destination :</label>
                         <select value={select} onChange={e=>setSelect(e.target.value)}>
                             <option></option>
-                            <option value="igd1">cms igd</option>
+                            <option value="ER_1">cms igd</option>
                         </select>
                         <br/>
 

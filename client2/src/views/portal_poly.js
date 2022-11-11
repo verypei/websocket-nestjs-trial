@@ -51,6 +51,7 @@ export default function PORTAL_POLY({ props }) {
     
     useEffect(()=>{
         socket.on('ALL_RECEIVE',handleSocket);
+        socket.on('POLY_2_RECEIVE',handleSocket);
         return ()=>{
             socket.off();
         }
@@ -69,16 +70,8 @@ export default function PORTAL_POLY({ props }) {
                 pushData(data)
                 socket.off();
                 break;
-            case "apotek2":
-                pushData()
-                socket.off();
-                break;
-            case "poly1":
-                pushData()
-                socket.off();
-                break;
-            case "igd1":
-                pushData()
+            case "POLY_1":
+                pushData(data)
                 socket.off();
                 break;
             default:
@@ -92,15 +85,16 @@ export default function PORTAL_POLY({ props }) {
             title:title.current.value,
             detail:detail.current.value,
             category:category.current.value,
-            origin:"poly2",
-            destination:destination.current.value,
-            status:status.current.value === "true" ? true : false 
+            origin:"POLY_2",
+            destination:select,
+            status:status === "true" ? true : false 
         }
         const resp = await axios.post('http://localhost:3334/notif',obj);
         console.log(resp,"----RESP----");
         if(resp){
-            socket.emit('poly2',obj)
+            socket.emit('POLY_2_SEND',obj)
         }
+
     }
 
     const handleNotif = (e) => {
@@ -178,7 +172,7 @@ export default function PORTAL_POLY({ props }) {
                     <label>category :</label>
                     <input type="text" ref={category}/><br/>
 
-                    <label for="cars">Choose a status :</label>
+                    <label>Choose a status :</label>
                         <select value={status} onChange={e=>setStatus(e.target.value)}>
                         <option></option>
                         <option value={true}>CITO</option>
@@ -189,7 +183,7 @@ export default function PORTAL_POLY({ props }) {
                     <label for="cars">Choose a destination :</label>
                         <select value={select} onChange={e=>setSelect(e.target.value)}>
                             <option></option>
-                            <option value="poly1">cms poly</option>
+                            <option value="POLY_1">cms poly</option>
                         </select>
                         <br/>
 

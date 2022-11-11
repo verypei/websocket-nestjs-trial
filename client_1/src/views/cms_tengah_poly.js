@@ -50,16 +50,13 @@ export default function CMS_TENGAH_POLY({ props }) {
 
     // ======================================== USE EFFECT ================================================
     
-            useEffect(()=>{
-                socket.on('ALL_RECEIVE',handleSocket);
-                // socket.on('POLY_1_RECEIVE',handleSocket);
-                // socket.on('igd1',handleSocket);
-                // socket.on('apotek1',handleSocket);
-                
-                return ()=>{
-                    socket.off();
-                }
-            },[data])
+    useEffect(()=>{
+        socket.on('ALL_RECEIVE',handleSocket);
+        socket.on('POLY_1_RECEIVE',handleSocket);
+        return ()=>{
+            socket.off();
+        }
+    },[data])
     
     // ========================================== FUNCTION =====================================================
     const pushData = (data)=>{
@@ -74,16 +71,16 @@ export default function CMS_TENGAH_POLY({ props }) {
                 pushData(data)
                 socket.off();
                 break;
-            case "poly2":
-                pushData()
+            case "PHARMACY_1":
+                pushData(data)
                 socket.off();
                 break;
-            case "apotek1":
-                pushData()
+            case "ER_1":
+                pushData(data)
                 socket.off();
                 break;
-            case "igd1":
-                pushData()
+            case "POLY_2":
+                pushData(data)
                 socket.off();
                 break;
             default:
@@ -98,15 +95,17 @@ export default function CMS_TENGAH_POLY({ props }) {
             title:title.current.value,
             detail:detail.current.value,
             category:category.current.value,
-            origin:"poly1",
-            destination:destination.current.value,
-            status:status.current.value === "true" ? true : false,
+            origin:"POLY_1",
+            destination:select,
+            status:status === "true" ? true : false,
         }
+        console.log(obj,"--OBJ--");
         const resp = await axios.post('http://localhost:3334/notif',obj);
         console.log(resp,"----RESP----");
         if(resp){
-            socket.emit('poly1',obj)
+            socket.emit('POLY_1_SEND',obj)
         }
+
     }
 
     const handleNotif = (e) => {
@@ -195,9 +194,10 @@ export default function CMS_TENGAH_POLY({ props }) {
                     <label for="cars">Choose a destination :</label>
                         <select value={select} onChange={e=>setSelect(e.target.value)}>
                             <option></option>
-                            <option value="pusat">cms pusat</option>
-                            <option value="igd1">cms igd</option>
-                            <option value="apotek1">cms apotek</option>
+                            <option value="CENTER">pusat</option>
+                            <option value="ER_1">cms igd</option>
+                            <option value="PHARMACY_1">cms apotek</option>
+                            <option value="POLY_2">portal poly</option>
                         </select>
                         <br/>
 
@@ -205,7 +205,7 @@ export default function CMS_TENGAH_POLY({ props }) {
 
                 </form>
                 <h6>{data.length > 0 && data.map((el, idx)=>{
-                        return <p>{JSON.stringify(el)}</p>
+                        return <p key={idx}>{JSON.stringify(el)}</p>
                     })}</h6>
             </div>
         </div>

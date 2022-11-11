@@ -53,10 +53,7 @@ export default function CMS_TENGAH_APOTEK({ props }) {
 
     useEffect(()=>{
         socket.on('ALL_RECEIVE',handleSocket);
-        // socket.on('PHARMACY_1_RECEIVE',handleSocket);
-        // socket.on('igd1',handleSocket);
-        // socket.on('poly1',handleSocket);
-        
+        socket.on('PHARMACY_1_RECEIVE',handleSocket);
         return ()=>{
             socket.off();
         }
@@ -76,16 +73,16 @@ export default function CMS_TENGAH_APOTEK({ props }) {
                 pushData(data)
                 socket.off();
                 break;
-            case "apotek2":
-                pushData()
+            case "POLY_1":
+                pushData(data)
                 socket.off();
                 break;
-            case "poly1":
-                pushData()
+            case "ER_1":
+                pushData(data)
                 socket.off();
                 break;
-            case "igd1":
-                pushData()
+            case "PHARMACY_2":
+                pushData(data)
                 socket.off();
                 break;
             default:
@@ -100,16 +97,17 @@ export default function CMS_TENGAH_APOTEK({ props }) {
             title:title.current.value,
             detail:detail.current.value,
             category:category.current.value,
-            origin:"apotek1",
-            destination:destination.current.value,
-            status:status.current.value === "true" ? true : false,
+            status:status === "true" ? true : false,
+            origin:"PHARMACY_1",
+            destination:select,
         }
+        console.log(obj,"---OBJ---");
         const resp = await axios.post('http://localhost:3334/notif',obj);
         console.log(resp,"----RESP----");
         if(resp){
             socket.emit('PHARMACY_1_SEND',obj);
         }
-        
+
     }
 
     const handleNotif = (e) => {
@@ -198,10 +196,10 @@ export default function CMS_TENGAH_APOTEK({ props }) {
                     <label for="cars">Choose a destination :</label>
                         <select value={select} onChange={e=>setSelect(e.target.value)}>
                         <option></option>
-                        <option value="pusat">cms pusat</option>
-                        <option value="poly1">cms poly</option>
-                        <option value="igd1">cms igd</option>
-                        <option value="apotek2">portal apotek</option>
+                        <option value="CENTER">pusat</option>
+                        <option value="POLY_1">cms poly</option>
+                        <option value="ER_1">cms igd</option>
+                        <option value="PHARMACY_2">portal apotek</option>
                         </select>
                         <br/>
 
