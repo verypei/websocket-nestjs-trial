@@ -99,12 +99,13 @@ export default function CMS_TENGAH_POLY({ props }) {
             destination:select,
             status:status === "true" ? true : false,
         }
-        console.log(obj,"--OBJ--");
-        const resp = await axios.post('http://localhost:3334/notif',obj);
-        console.log(resp,"----RESP----");
-        if(resp){
-            socket.emit('POLY_1_SEND',obj)
-        }
+        // console.log(obj,"--OBJ--");
+        // const resp = await axios.post('http://localhost:3334/notif',obj);
+        // console.log(resp,"----RESP----");
+        // if(resp){
+        //     socket.emit('POLY_1_SEND',obj)
+        // }
+        socket.emit('POLY_1_SEND',obj)
 
     }
 

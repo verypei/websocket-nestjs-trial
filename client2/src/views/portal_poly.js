@@ -89,11 +89,13 @@ export default function PORTAL_POLY({ props }) {
             destination:select,
             status:status === "true" ? true : false 
         }
-        const resp = await axios.post('http://localhost:3334/notif',obj);
-        console.log(resp,"----RESP----");
-        if(resp){
-            socket.emit('POLY_2_SEND',obj)
-        }
+        // const resp = await axios.post('http://localhost:3334/notif',obj);
+        // console.log(resp,"----RESP----");
+        // if(resp){
+        //     socket.emit('POLY_2_SEND',obj)
+        // }
+        socket.emit('POLY_2_SEND',obj)
+
 
     }
 

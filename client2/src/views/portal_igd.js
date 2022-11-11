@@ -89,12 +89,14 @@ export default function PORTAL_IGD({ props }) {
             destination:select,
             status:status === "true" ? true : false,
         }
-        console.log(obj);
-        const resp = await axios.post('http://localhost:3334/notif',obj);
-        console.log(resp,"----RESP----");
-        if(resp){
-            socket.emit('ER_2_SEND',obj)
-        }
+        // console.log(obj);
+        // const resp = await axios.post('http://localhost:3334/notif',obj);
+        // console.log(resp,"----RESP----");
+        // if(resp){
+        //     socket.emit('ER_2_SEND',obj)
+        // }
+        socket.emit('ER_2_SEND',obj)
+
 
     }
 

@@ -101,12 +101,13 @@ export default function CMS_TENGAH_APOTEK({ props }) {
             origin:"PHARMACY_1",
             destination:select,
         }
-        console.log(obj,"---OBJ---");
-        const resp = await axios.post('http://localhost:3334/notif',obj);
-        console.log(resp,"----RESP----");
-        if(resp){
-            socket.emit('PHARMACY_1_SEND',obj);
-        }
+        // console.log(obj,"---OBJ---");
+        // const resp = await axios.post('http://localhost:3334/notif',obj);
+        // console.log(resp,"----RESP----");
+        // if(resp){
+        //     socket.emit('PHARMACY_1_SEND',obj);
+        // }
+        socket.emit('PHARMACY_1_SEND',obj);
 
     }
 
